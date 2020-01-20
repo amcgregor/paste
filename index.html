@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+
+<title>The most minimal pastebin in the world.</title>
+
+<style>
+	*, *:before, *:after {
+		-webkit-box-sizing: border-box; 
+		-moz-box-sizing: border-box; 
+		box-sizing: border-box;
+		padding: 0;
+		margin: 0;
+	}
+	
+	body { padding: 15px; font: 14px "Helvetica Neue", Helvetica, sans-serif; }
+	code, pre, textarea {
+		font-family: 'Hasklug Nerd Font Mono', 'Hasklug NF', 'Hasklug Nerd Font', Hasklig, Monofur, monospace;
+		tab-size: 4;
+	}
+	pre, textarea {
+		font-size: 16px;
+		padding: 15px;
+		box-sizing: border-box;
+	}
+	p {
+		margin: 15px 0;
+	}
+	form {
+		margin-bottom: 15px;
+	}
+	pre {
+		background-color: #eee;
+		overflow: auto;
+	}
+	textarea {
+		width: 100%;
+		margin-top: 5px;
+	}
+	
+	.badged[data-remaining] {
+		position: relative;
+	}
+	
+	.badged[data-remaining]:after {
+		content: attr(data-remaining) " / " attr(data-limit);
+		display: inline-block;
+		position: absolute;
+		bottom: 1ex;
+		right: 1ex;
+		padding: 0.25ex 0.5ex;
+		pointer-events: none;  /* We aren't interactable, pass through! */
+		background-color: rgba(255,255,255,0.75);
+		color: #555;
+		font-size: 0.8em;
+		font-weight: bold;
+	}
+	
+	.badged[data-remaining].safe::after { color: green; }
+	.badged[data-remaining].warning::after { color: yellow; }
+	.badged[data-remaining].critical::after { color: red; }
+</style>
+
+<form>
+	<!-- Div required due to quirk of input elements and pseudo-element availability. -->
+	<details open>
+		<summary>Editor</summary>
+		<div><textarea id=input rows=10 maxlength=4000></textarea></div>
+		<p>Light warning: tab key destroys undo history and is still a WIP. I'd use <code>contenteditable</code> (<a href="https://w3c.github.io/contentEditable/#plaintext_only_state"><code>plaintext-only</code></a>), but <a href="https://caniuse.com/#feat=mdn-html_global_attributes_contenteditable_plaintext-only">support is not widespread</a>. All text within the textarea is soft-wrapped, the output is not wrapped. Green length indicator indicates likely success—without wrapping—if pasted into IRC. No analytics, no fonts, no external resources of any kind. Changes are pushed to the address bar "live".  2.4KB total size.  Character counting approach <a href="https://codepen.io/amcgregor/pen/bGNQgRW">ironed out on Codepen</a>.</p>
+	</details>
+</form>
+
+<pre id="output"></pre>
+
+<p style="text-align: center">Page code and design copyright © 2020 Alice Bevan-McGregor. Released under the MIT license. Content presented within is the property of the respective users.</p>
+
+<script>
+	'use strict'
+	
+	// Better btoa/atob: https://github.com/dankogai/js-base64
+	// Better approach to change-delay: https://github.com/amcgregor/change-delay
+	
+	var delay;
+	let output = document.getElementById('output'),
+		input = document.getElementById('input');
+	
+	if ( document.location.search ) {
+		let text = decodeURIComponent(document.location.search.substr(1).replace(/\+/g, '%20'));
+		// text = atob(text);
+		
+		document.getElementsByTagName('details')[0].removeAttribute('open');
+		output.innerText = text;
+		input.value = text;
+	}
+	
+	function commit(origin) {
+		let value = origin.value;
+		// value = btoa(value);
+		let text = encodeURIComponent(value).replace(/%20/g, '+').replace(/\./g, '%2E');
+		
+		window.history.replaceState({}, "", "pbin.html?" + text)
+		output.innerText = origin.value;
+	}
+	
+	function insertTab(e) {
+		let target = e.target,
+			start = target.selectionStart,
+			end = target.selectionEnd;
+		
+		e.preventDefault();
+		
+		// set textarea value to: text before caret + tab + text after caret
+		target.value = target.value.substring(0, start) + "\t" + target.value.substring(end);
+		
+		// put caret at right position again
+		target.selectionStart = target.selectionEnd = start + 1;
+	}
+	
+	input.addEventListener('keydown', e => {
+		let keyCode = e.keyCode || e.which,
+			target = e.target;
+		
+		if ( keyCode == 9 ) insertTab(e);
+	});
+	
+	input.addEventListener('keyup', e => {
+		window.clearTimeout(delay);  // Clear any pending commit timeout.
+		delay = window.setTimeout(commit, 450, input);  // Delay commit to ensure typing has stopped.
+	});
+	
+	// Maximum length notifications.
+	
+	function tick(elem) {
+		if ( elem.target ) elem = elem.target;
+	
+		var limit = elem.maxLength,
+			parent = elem.parentElement,
+			length = elem.value.length;
+	
+		parent.dataset['limit'] = limit;
+		parent.dataset['remaining'] = limit - length;
+		parent.classList.remove('safe', 'warning', 'critical');
+		
+		if ( length < 256 ) {  // Our link is short enough to paste into IRC.
+			parent.classList.add('safe');
+		} else if ( length / limit >= 0.90 ) {  // We've reached 90% of the limit.
+			parent.classList.add('critical');
+		} else if ( length / limit >= 0.75 ) {  // Reached 75% of the limit.
+			parent.classList.add('warning');
+		}
+	}
+
+	let elements = [...document.querySelectorAll('input[maxlength], textarea[maxlength]')];
+
+	input.addEventListener('keyup', tick);
+	input.parentElement.classList.add('badged');
+	tick(input);
+</script>
