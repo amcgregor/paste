@@ -96,7 +96,7 @@
 		// value = btoa(value);
 		let text = encodeURIComponent(value).replace(/%20/g, '+').replace(/\./g, '%2E');
 		
-		window.history.replaceState({}, "", "pbin.html?" + text)
+		window.history.replaceState({}, "", "/?" + text)
 		output.innerText = origin.value;
 	}
 	
