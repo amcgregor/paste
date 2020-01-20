@@ -2,6 +2,8 @@
 
 An anonymous pastebin web application service… just without the "service" part.  Or the "web application".  Intended for reasonable length snippets, with a green light for links that ought to fit within an IRC message.  Utilizes no external assets of any kind, and no "server-side" storage.
 
+For those tiny code samples that happen to be multi-line or require indentation, such as is the case with Python.
+
 
 ### License
 
