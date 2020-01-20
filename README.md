@@ -1,4 +1,4 @@
-# [paste.webcore.io](paste.webcore.io)
+# [paste.webcore.io](https://paste.webcore.io/)
 
 An anonymous pastebin web application service… just without the "service" part.  Or the "web application".  Intended for reasonable length snippets, with a green light for links that ought to fit within an IRC message.  Utilizes no external assets of any kind, and no "server-side" storage.
 
