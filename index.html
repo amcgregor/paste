@@ -115,6 +115,7 @@
 	});
 	
 	input.addEventListener('keyup', e => {
+		if ( e.isComposing || e.keyCode === 229) return;  // Protect against IME composition events.
 		window.clearTimeout(delay);  // Clear any pending commit timeout.
 		delay = window.setTimeout(commit, 450, input);  // Delay commit to ensure typing has stopped.
 	});
