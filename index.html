@@ -12,10 +12,10 @@
 		outline: none;
 	}
 	
-	body { font: 14px "Helvetica Neue", Helvetica, sans-serif; }
+	body { font: 14px "Helvetica Neue", Helvetica, sans-serif; background-color: #eee; }
 	body, form { padding: 15px; }
 	textarea { font: 16px 'Hasklug Nerd Font Mono', 'Hasklug NF', 'Hasklug Nerd Font', Hasklig, Monofur, monospace; width: 100%; resize: none; background-color: transparent; border: none; overflow: hidden; }
-	form { background-color: #eee; }
+	form { background-color: #ddd; }
 	p { margin: 10px 0 15px; }
 	summary { margin-bottom: 10px; }
 	
@@ -37,6 +37,11 @@
 	.badged[data-remaining].safe::after { color: green; }
 	.badged[data-remaining].warning::after { color: yellow; }
 	.badged[data-remaining].critical::after { color: red; }
+	
+	@media (prefers-color-scheme: dark) {
+		body { background-color: #111; }
+		form { background-color: #222; }
+	}
 </style>
 
 <form><textarea id=input rows=10 maxlength=4000></textarea></form>
