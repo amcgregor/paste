@@ -13,10 +13,9 @@
 	}
 	
 	body { font: 14px "Helvetica Neue", Helvetica, sans-serif; }
-	pre, textarea { font: 16px 'Hasklug Nerd Font Mono', 'Hasklug NF', 'Hasklug Nerd Font', Hasklig, Monofur, monospace; }
-	body, pre, textarea { padding: 15px; }
-	pre { background-color: #eee; }
-	textarea { width: 100%; }
+	body, form { padding: 15px; }
+	textarea { font: 16px 'Hasklug Nerd Font Mono', 'Hasklug NF', 'Hasklug Nerd Font', Hasklig, Monofur, monospace; width: 100%; resize: none; background-color: transparent; border: none; overflow: hidden; }
+	form { background-color: #eee; }
 	p { margin: 10px 0 15px; }
 	summary { margin-bottom: 10px; }
 	
@@ -40,16 +39,7 @@
 	.badged[data-remaining].critical::after { color: red; }
 </style>
 
-<form>
-	<!-- Div required due to quirk of input elements and pseudo-element availability. -->
-	<details open>
-		<summary>Editor</summary>
-		<div><textarea id=input rows=10 maxlength=4000></textarea></div>
-		<p>Light warning: tab key destroys undo history and is still a WIP. I'd use <code>contenteditable</code> (<a href="https://w3c.github.io/contentEditable/#plaintext_only_state"><code>plaintext-only</code></a>), but <a href="https://caniuse.com/#feat=mdn-html_global_attributes_contenteditable_plaintext-only">support is not widespread</a>. All text within the textarea is soft-wrapped, the output is not wrapped. Green length indicator indicates likely success—without wrapping—if pasted into IRC. No analytics, no fonts, no external resources of any kind. Changes are pushed to the address bar "live".  2.4KB total size.  Character counting approach <a href="https://codepen.io/amcgregor/pen/bGNQgRW">ironed out on Codepen</a>.</p>
-	</details>
-</form>
-
-<pre id="output"></pre>
+<form><textarea id=input rows=10 maxlength=4000></textarea></form>
 
 <p style="text-align: center">
 	© 2020 Alice Bevan-McGregor.
@@ -128,6 +118,8 @@
 	function tick(elem) {
 		if ( elem.target ) elem = elem.target;
 		
+		elem.rows = elem.value.match(/\n/g).length + 1;
+		
 		var limit = elem.maxLength,
 			parent = elem.parentElement,
 			length = elem.value.length;
@@ -153,7 +145,7 @@
 		if ( e.isComposing || e.keyCode === 229) return;  // Protect against IME composition events.
 		window.clearTimeout(delay);  // Clear any pending commit timeout.
 		delay = window.setTimeout(commit, 450, input);  // Delay commit to ensure typing has stopped.
-		tick(e);  // Update the maximum length calculation.
+		tick(e);  // Update the maximum length calculation and input size.
 	});
 	
 	input.parentElement.dataset['limit'] = input.maxLength;
