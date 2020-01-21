@@ -7,43 +7,18 @@
 		box-sizing: border-box;
 		padding: 0;
 		margin: 0;
-	}
-	
-	body {
-		padding: 15px;
-		font: 14px "Helvetica Neue", Helvetica, sans-serif;
-	}
-	
-	code, pre, textarea {
-		font-family: 'Hasklug Nerd Font Mono', 'Hasklug NF', 'Hasklug Nerd Font', Hasklig, Monofur, monospace;
 		tab-size: 4;
-	}
-	
-	pre, textarea {
-		font-size: 16px;
-		padding: 15px;
-		box-sizing: border-box;
-	}
-	
-	p {
-		margin: 15px 0;
-	}
-	form {
-		margin-bottom: 15px;
-	}
-	pre {
-		background-color: #eee;
 		overflow: auto;
 	}
-	textarea {
-		width: 100%;
-		margin-top: 5px;
-	}
 	
-	.badged[data-remaining] {
-		position: relative;
-	}
+	body { font: 14px "Helvetica Neue", Helvetica, sans-serif; }
+	pre, textarea { font: 16px 'Hasklug Nerd Font Mono', 'Hasklug NF', 'Hasklug Nerd Font', Hasklig, Monofur, monospace; }
+	body, pre, textarea { padding: 15px; }
+	pre { background-color: #eee; }
+	textarea { width: 100%; }
+	p { margin: 10px 0 15px; }
 	
+	.badged[data-remaining] { position: relative; }
 	.badged[data-remaining]:after {
 		content: attr(data-remaining) " / " attr(data-limit);
 		display: inline-block;
@@ -51,7 +26,7 @@
 		bottom: 1ex;
 		right: 1ex;
 		padding: 0.25ex 0.5ex;
-		pointer-events: none;  /* We aren't interactable, pass through! */
+		pointer-events: none;  /* We aren't interact-able, pass through! */
 		background-color: rgba(255,255,255,0.75);
 		color: #555;
 		font-size: 0.8em;
