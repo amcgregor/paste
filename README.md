@@ -5,6 +5,26 @@ An anonymous pastebin web application service… just without the "service" part
 For those tiny code samples that happen to be multi-line or require indentation, such as is the case with Python.
 
 
+### Editing Features
+
+Some functionality beyond standard browser behaviours for a `<textarea>` are included:
+
+* **Insertion of literal tabs.**
+  This breaks tab-based accessible navigation of the page, but the page is essentially that one input.
+
+* **Multi-line alteration of indentation level.**
+  When selecting text across multiple lines, pressing tab (or shift+tab) will increase (or decrease) the indentation level.
+
+* **Display of remaining character limit.**
+  As the "paste" is contained entirely within the URI, there are hard limits on the upper bound of the storage space available. Additionally, some communications mediums have limits on the length of single unwrapped strings.
+
+  * If the meter is green, less than 256 bytes of space have been utilized, and the link is (most likely; depends on your "ident") safe for pasting into IRC.
+
+  * If the meter is yellow, you have exceeded 75% of the limit.
+
+  * If the meter is red, you have exceeded 90% of the limit.
+
+
 ### License
 
 Copyright © 2020 Alice Bevan-McGregor and contributors.
