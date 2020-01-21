@@ -66,6 +66,7 @@
 		document.getElementsByTagName('details')[0].removeAttribute('open');
 		output.innerText = text;
 		input.value = text;
+		tick(input);
 	}
 	
 	function commit(origin) {
@@ -97,30 +98,29 @@
 		}
 		
 		// TODO: Adjust start to the actual start of the line containing the selection.
+		var count;  // Number of insertions or removals.
 		
 		if ( !shifted ) {  // Indent the selected lines.
+			
+			count = value.substring(start, end).match(/^/gm).length;
 			target.value = value.substring(0, start) +
 				value.substring(start, end).replace(/^/gm, "\t") +
 				value.substring(end)
+			
+			// Re-select the previously selected region, expanded.
+			target.setSelectionRange(start, end + count);
+			
 		} else {  // De-dent the selected lines, which may be one if de-denting the current line.
+			
+			count = value.substring(start, end).match(/^\t/gm).length;
 			target.value = value.substring(0, start) +
 				value.substring(start, end).replace(/^\t/gm, "") +
 				value.substring(end)
+			
+			// Re-select the previously selected region, collapsed.
+			target.setSelectionRange(start, end - count);
 		}
 	}
-	
-	input.addEventListener('keydown', e => {
-		if ( e.isComposing || e.keyCode === 229) return;  // Protect against IME composition events.
-		if ( e.which === 9 ) insertTab(e);
-	});
-	
-	input.addEventListener('keyup', e => {
-		if ( e.isComposing || e.keyCode === 229) return;  // Protect against IME composition events.
-		window.clearTimeout(delay);  // Clear any pending commit timeout.
-		delay = window.setTimeout(commit, 450, input);  // Delay commit to ensure typing has stopped.
-	});
-	
-	// Maximum length notifications.
 	
 	function tick(elem) {
 		if ( elem.target ) elem = elem.target;
@@ -141,8 +141,19 @@
 		}
 	}
 	
+	input.addEventListener('keydown', e => {
+		if ( e.isComposing || e.keyCode === 229) return;  // Protect against IME composition events.
+		if ( e.which === 9 ) insertTab(e);
+	});
+	
+	input.addEventListener('keyup', e => {
+		if ( e.isComposing || e.keyCode === 229) return;  // Protect against IME composition events.
+		window.clearTimeout(delay);  // Clear any pending commit timeout.
+		delay = window.setTimeout(commit, 450, input);  // Delay commit to ensure typing has stopped.
+		tick(e);  // Update the maximum length calculation.
+	});
+	
 	input.parentElement.dataset['limit'] = input.maxLength;
-	input.addEventListener('keyup', tick);
 	input.parentElement.classList.add('badged');
 	tick(input);
 	
