@@ -95,6 +95,18 @@
 			
 			return;
 		}
+		
+		// TODO: Adjust start to the actual start of the line containing the selection.
+		
+		if ( !shifted ) {  // Indent the selected lines.
+			target.value = value.substring(0, start) +
+				value.substring(start, end).replace(/^/gm, "\t") +
+				value.substring(end)
+		} else {  // De-dent the selected lines, which may be one if de-denting the current line.
+			target.value = value.substring(0, start) +
+				value.substring(start, end).replace(/^\t/gm, "") +
+				value.substring(end)
+		}
 	}
 	
 	input.addEventListener('keydown', e => {
