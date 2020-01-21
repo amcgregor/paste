@@ -50,13 +50,11 @@
 	'use strict'
 	
 	var delay;
-	let output = document.getElementById('output'),
-		input = document.getElementById('input');
+	let input = document.getElementById('input');
 	
 	if ( document.location.search ) {
 		let text = decodeURIComponent(document.location.search.substr(1).replace(/\+/g, '%20'));
 		
-		output.innerText = text;
 		input.value = text;
 		tick(input);
 	}
@@ -66,7 +64,6 @@
 		let text = encodeURIComponent(value).replace(/%20/g, '+').replace(/\./g, '%2E');
 		
 		window.history.replaceState({}, "", "/?" + text)
-		output.innerText = origin.value;
 	}
 	
 	function insertTab(e) {
