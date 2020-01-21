@@ -56,16 +56,12 @@
 <script>
 	'use strict'
 	
-	// Better btoa/atob: https://github.com/dankogai/js-base64
-	// Better approach to change-delay: https://github.com/amcgregor/change-delay
-	
 	var delay;
 	let output = document.getElementById('output'),
 		input = document.getElementById('input');
 	
 	if ( document.location.search ) {
 		let text = decodeURIComponent(document.location.search.substr(1).replace(/\+/g, '%20'));
-		// text = atob(text);
 		
 		document.getElementsByTagName('details')[0].removeAttribute('open');
 		output.innerText = text;
@@ -74,7 +70,6 @@
 	
 	function commit(origin) {
 		let value = origin.value;
-		// value = btoa(value);
 		let text = encodeURIComponent(value).replace(/%20/g, '+').replace(/\./g, '%2E');
 		
 		window.history.replaceState({}, "", "/?" + text)
@@ -84,22 +79,27 @@
 	function insertTab(e) {
 		let target = e.target,
 			start = target.selectionStart,
-			end = target.selectionEnd;
+			end = target.selectionEnd,
+			shifted = e.getModifierState('Shift'),
+			value = target.value;
 		
 		e.preventDefault();
 		
-		// set textarea value to: text before caret + tab + text after caret
-		target.value = target.value.substring(0, start) + "\t" + target.value.substring(end);
-		
-		// put caret at right position again
-		target.selectionStart = target.selectionEnd = start + 1;
+		if ( !shifted && !value.substring(start, end).includes("\n") ) {
+			// We do not cross a line boundary, our work is quite a bit simpler.
+			// Inject a tab at the target location, or replacing selected text.
+			target.value = value.substring(0, start) + "\t" + value.substring(end);
+			
+			// Return the insertion cursor (caret) to just after the injected tab character.
+			target.selectionStart = target.selectionEnd = start + 1;
+			
+			return;
+		}
 	}
 	
 	input.addEventListener('keydown', e => {
-		let keyCode = e.keyCode || e.which,
-			target = e.target;
-		
-		if ( keyCode == 9 ) insertTab(e);
+		if ( e.isComposing || e.keyCode === 229) return;  // Protect against IME composition events.
+		if ( e.which === 9 ) insertTab(e);
 	});
 	
 	input.addEventListener('keyup', e => {
@@ -111,12 +111,11 @@
 	
 	function tick(elem) {
 		if ( elem.target ) elem = elem.target;
-	
+		
 		var limit = elem.maxLength,
 			parent = elem.parentElement,
 			length = elem.value.length;
-	
-		parent.dataset['limit'] = limit;
+		
 		parent.dataset['remaining'] = limit - length;
 		parent.classList.remove('safe', 'warning', 'critical');
 		
@@ -128,9 +127,8 @@
 			parent.classList.add('warning');
 		}
 	}
-
-	let elements = [...document.querySelectorAll('input[maxlength], textarea[maxlength]')];
-
+	
+	input.parentElement.dataset['limit'] = input.maxLength;
 	input.addEventListener('keyup', tick);
 	input.parentElement.classList.add('badged');
 	tick(input);
