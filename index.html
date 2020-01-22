@@ -74,10 +74,10 @@
 	
 	function insertTab(e) {
 		let target = e.target,
-			start = target.selectionStart,
-			end = target.selectionEnd,
 			shifted = e.getModifierState('Shift'),
 			value = target.value;
+		var start = target.selectionStart,
+			end = target.selectionEnd;
 		
 		e.preventDefault();
 		
@@ -92,12 +92,16 @@
 			return;
 		}
 		
-		// TODO: Adjust start to the actual start of the line containing the selection.
+		start = value.lastIndexOf('\n', start) + 1;
+		end = value.indexOf('\n', end);
+		if ( end < 0 ) end = value.length;
+		
 		var count;  // Number of insertions or removals.
 		
 		if ( !shifted ) {  // Indent the selected lines.
 			
 			count = value.substring(start, end).match(/^/gm).length;
+			
 			target.value = value.substring(0, start) +
 				value.substring(start, end).replace(/^/gm, "\t") +
 				value.substring(end)
