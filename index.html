@@ -81,7 +81,7 @@
 			.replace(/%7D/g, '}')
 			.replace(/%3B/g, ';')
 		
-		window.history.replaceState({}, "", "/?" + text)
+		window.history.replaceState({}, "", window.location.origin + window.location.pathname + "?" + text);
 	}
 	
 	function insertTab(e) {
