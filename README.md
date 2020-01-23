@@ -7,16 +7,19 @@ For those tiny code samples that happen to be multi-line or require indentation,
 
 ### Editing Features
 
-Some functionality beyond standard browser behaviours for a `<textarea>` are included:
+Some functionality beyond standard browser behaviours for a `<textarea>` are included. These assume tab-based indentation. The One True Indentation™.
 
 * **Insertion of literal tabs.**
   This breaks tab-based accessible navigation of the page, but the page is essentially that one input.
 
 * **Multi-line alteration of indentation level.**
   When selecting text across multiple lines, pressing tab (or shift+tab) will increase (or decrease) the indentation level.
+  Automatically expands selection to include the full lines from beginning to end.
 
 * **Display of remaining character limit.**
   As the "paste" is contained entirely within the URI, there are hard limits on the upper bound of the storage space available. Additionally, some communications mediums have limits on the length of single unwrapped strings.
+
+  * If the meter is magenta, less than 160 bytes of space have been utilized, and the link is safe to SMS or iMessage.
 
   * If the meter is green, less than 256 bytes of space have been utilized, and the link is (most likely; depends on your "ident") safe for pasting into IRC.
 
