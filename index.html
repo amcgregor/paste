@@ -55,14 +55,12 @@
 <script>
 	'use strict'
 	
-	var delay;
-	let input = document.getElementById('input');
+	var delay
+	let input = document.getElementById('input')
 	
 	if ( document.location.search ) {
-		let text = decodeURIComponent(document.location.search.substr(1).replace(/\+/g, '%20'));
-		
-		input.value = text;
-		tick(input);
+		input.value = decodeURIComponent(document.location.search.substr(1).replace(/\+/g, '%20'))
+		tick(input)
 	}
 	
 	function commit(origin) {
@@ -81,77 +79,75 @@
 			.replace(/%7D/g, '}')
 			.replace(/%3B/g, ';')
 		
-		window.history.replaceState({}, "", window.location.origin + window.location.pathname + "?" + text);
+		window.history.replaceState({}, "", window.location.origin + window.location.pathname + "?" + text)
 	}
 	
 	function insertTab(e) {
 		let target = e.target,
 			shifted = e.getModifierState('Shift'),
-			value = target.value;
+			value = target.value
 		var start = target.selectionStart,
-			end = target.selectionEnd;
+			end = target.selectionEnd
 		
 		e.preventDefault();
 		
 		if ( !shifted && !value.substring(start, end).includes("\n") ) {
 			// We do not cross a line boundary, our work is quite a bit simpler.
 			// Inject a tab at the target location, or replacing selected text.
-			target.value = value.substring(0, start) + "\t" + value.substring(end);
+			target.value = value.substring(0, start) + "\t" + value.substring(end)
 			
 			// Return the insertion cursor (caret) to just after the injected tab character.
-			target.selectionStart = target.selectionEnd = start + 1;
+			target.selectionStart = target.selectionEnd = start + 1
 			
-			return;
+			return
 		}
 		
-		start = value.lastIndexOf('\n', start) + 1;
-		end = value.indexOf('\n', end);
+		start = value.lastIndexOf('\n', start) + 1
+		end = value.indexOf('\n', end)
 		if ( end < 0 ) end = value.length;
 		
 		var count;  // Number of insertions or removals.
 		
 		if ( !shifted ) {  // Indent the selected lines.
 			
-			count = value.substring(start, end).match(/^/gm).length;
-			
+			count = value.substring(start, end).match(/^/gm).length
 			target.value = value.substring(0, start) +
 				value.substring(start, end).replace(/^/gm, "\t") +
 				value.substring(end)
 			
 			// Re-select the previously selected region, expanded.
-			target.setSelectionRange(start, end + count);
+			target.setSelectionRange(start, end + count)
 			
 		} else {  // De-dent the selected lines, which may be one if de-denting the current line.
 			
-			count = value.substring(start, end).match(/^\t/gm).length;
+			count = value.substring(start, end).match(/^\t/gm).length
 			target.value = value.substring(0, start) +
 				value.substring(start, end).replace(/^\t/gm, "") +
 				value.substring(end)
 			
 			// Re-select the previously selected region, collapsed.
-			target.setSelectionRange(start, end - count);
+			target.setSelectionRange(start, end - count)
 		}
 	}
 	
 	function tick(elem) {
-		if ( elem.target ) elem = elem.target;
+		if ( elem.target ) elem = elem.target
 		
 		elem.rows = elem.value.match(/\n/g).length + 1;
 		
 		var limit = elem.maxLength,
 			parent = elem.parentElement,
-			length = elem.value.length;
+			length = elem.value.length
 		
-		parent.dataset['remaining'] = limit - length;
-		parent.classList.remove('safe', 'warning', 'critical');
+		parent.dataset['remaining'] = limit - length
+		parent.classList.remove('safe', 'warning', 'critical')
 		
-		if ( length < 256 ) {  // Our link is short enough to paste into IRC.
+		if ( length < 256 )  // Our link is short enough to paste into IRC.
 			parent.classList.add('safe');
-		} else if ( length / limit >= 0.90 ) {  // We've reached 90% of the limit.
+		else if ( length / limit >= 0.90 )  // We've reached 90% of the limit.
 			parent.classList.add('critical');
-		} else if ( length / limit >= 0.75 ) {  // Reached 75% of the limit.
+		else if ( length / limit >= 0.75 )  // Reached 75% of the limit.
 			parent.classList.add('warning');
-		}
 	}
 	
 	input.addEventListener('keydown', e => {
@@ -161,15 +157,15 @@
 	
 	input.addEventListener('keyup', e => {
 		if ( e.isComposing || e.keyCode === 229) return;  // Protect against IME composition events.
-		window.clearTimeout(delay);  // Clear any pending commit timeout.
-		delay = window.setTimeout(commit, 450, input);  // Delay commit to ensure typing has stopped.
-		tick(e);  // Update the maximum length calculation and input size.
+		window.clearTimeout(delay)  // Clear any pending commit timeout.
+		delay = window.setTimeout(commit, 450, input)  // Delay commit to ensure typing has stopped.
+		tick(e)  // Update the maximum length calculation and input size.
 	});
 	
-	input.parentElement.dataset['limit'] = input.maxLength;
-	input.parentElement.classList.add('badged');
-	tick(input);  // Update our length counters and whatnot.
-	commit(input);  // Canonicalize the URI.
+	input.parentElement.dataset['limit'] = input.maxLength
+	input.parentElement.classList.add('badged')
+	tick(input)  // Update our length counters and whatnot.
+	commit(input)  // Canonicalize the URI.
 	
 	// The above will take care of "minifying" any query string given, as often URL encoding is excessive. E.g.:
 	// let%20target%20%3D%20e.target%2C%0A%09start%20%3D%20target.selectionStart%2C%0A%09end%20%3D%20target.selectionEnd%2C%0A%09shifted%20%3D%20e.getModifierState%28%27Shift%27%29%2C%0A%09value%20%3D%20target.value%3B
