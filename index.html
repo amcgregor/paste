@@ -36,9 +36,10 @@
 		font-weight: bold;
 	}
 	
-	.badged[data-remaining].safe::after { color: green; }
-	.badged[data-remaining].warning::after { color: yellow; }
-	.badged[data-remaining].critical::after { color: red; }
+	.badged[data-remaining].ludicrous::after { color: #F0F; }
+	.badged[data-remaining].safe::after { color: #060; }
+	.badged[data-remaining].warning::after { color: #FF0; }
+	.badged[data-remaining].critical::after { color: #F00; }
 	
 	@media (prefers-color-scheme: dark) {
 		body { background-color: #111; color: # }
@@ -142,14 +143,12 @@
 			length = elem.value.length
 		
 		parent.dataset['remaining'] = limit - length
-		parent.classList.remove('safe', 'warning', 'critical')
+		parent.classList.remove('ludicrous', 'safe', 'warning', 'critical')
 		
-		if ( length < 256 )  // Our link is short enough to paste into IRC.
-			parent.classList.add('safe');
-		else if ( length / limit >= 0.90 )  // We've reached 90% of the limit.
-			parent.classList.add('critical');
-		else if ( length / limit >= 0.75 )  // Reached 75% of the limit.
-			parent.classList.add('warning');
+		if ( length < 160 ) parent.classList.add('ludicrous')  // Our link is short enough to SMS or iMessage.
+		else if ( length < 256 ) parent.classList.add('safe');  // Our link is short enough to paste into IRC.
+		else if ( length / limit >= 0.90 ) parent.classList.add('critical');  // We've reached 90% of the limit.
+		else if ( length / limit >= 0.75 ) parent.classList.add('warning');  // Reached 75% of the limit.
 	}
 	
 	input.addEventListener('keydown', e => {
