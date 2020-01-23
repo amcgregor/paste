@@ -168,7 +168,13 @@
 	
 	input.parentElement.dataset['limit'] = input.maxLength;
 	input.parentElement.classList.add('badged');
-	tick(input);
+	tick(input);  // Update our length counters and whatnot.
+	commit(input);  // Canonicalize the URI.
+	
+	// The above will take care of "minifying" any query string given, as often URL encoding is excessive. E.g.:
+	// let%20target%20%3D%20e.target%2C%0A%09start%20%3D%20target.selectionStart%2C%0A%09end%20%3D%20target.selectionEnd%2C%0A%09shifted%20%3D%20e.getModifierState%28%27Shift%27%29%2C%0A%09value%20%3D%20target.value%3B
+	// let+target+=+e.target,%0A%09start+=+target.selectionStart,%0A%09end+=+target.selectionEnd,%0A%09shifted+=+e.getModifierState(%27Shift%27),%0A%09value+=+target.value;
+	// 165 vs. 211 bytes, or a 21% savings.
 	
 	// TODO: Paste detection and automatic bulk de-indentation or indentation matching.
 </script>
