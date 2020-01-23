@@ -16,7 +16,9 @@
 	body, form { padding: 15px; }
 	textarea { font: 16px 'Hasklug Nerd Font Mono', 'Hasklug NF', 'Hasklug Nerd Font', Hasklig, Monofur, monospace; width: 100%; resize: none; background-color: transparent; border: none; overflow: hidden; color: #222; }
 	form { background-color: #ddd; }
-	p { margin: 10px 0 15px; }
+	a { text-decoration: underline; color: inherit; }
+	p { margin: 10px 0; }
+	p:first-of-type { float: right; }
 	summary { margin-bottom: 10px; }
 	
 	.badged[data-remaining] { position: relative; }
@@ -47,10 +49,10 @@
 
 <form class=badged data-limit=4000><textarea id=input rows=10 maxlength=4000></textarea></form>
 
-<p style="text-align: center">
-	© 2020 Alice Bevan-McGregor.
-	<a href=https://github.com/amcgregor/paste>Released under the MIT license.</a>
-</p>
+<footer>
+	<p>© 2020 Alice Bevan-McGregor.</p>
+	<p><a href=https://github.com/amcgregor/paste>Released under the MIT license.</a></p>
+</footer>
 
 <script>
 	'use strict'
