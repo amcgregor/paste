@@ -36,15 +36,15 @@
 		font-weight: bold;
 	}
 	
-	.badged[data-remaining].ludicrous::after { color: #F0F; }
-	.badged[data-remaining].safe::after { color: #060; }
-	.badged[data-remaining].warning::after { color: #FF0; }
-	.badged[data-remaining].critical::after { color: #F00; }
+	.badged[data-remaining].ludicrous::after { color: #F0F }
+	.badged[data-remaining].safe::after { color: #060 }
+	.badged[data-remaining].warning::after { color: #FF0 }
+	.badged[data-remaining].critical::after { color: #F00 }
 	
 	@media (prefers-color-scheme: dark) {
-		body { background-color: #111; color: # }
+		body { background-color: #111; }
 		form { background-color: #222; }
-		textarea { color: #ccc; }
+		textarea { color: #ccc }
 	}
 </style>
 
@@ -92,7 +92,7 @@
 		var start = target.selectionStart,
 			end = target.selectionEnd
 		
-		e.preventDefault();
+		e.preventDefault()
 		
 		if ( !shifted && !value.substring(start, end).includes("\n") ) {
 			// We do not cross a line boundary, our work is quite a bit simpler.
@@ -107,9 +107,9 @@
 		
 		start = value.lastIndexOf('\n', start) + 1
 		end = value.indexOf('\n', end)
-		if ( end < 0 ) end = value.length;
+		if ( end < 0 ) end = value.length
 		
-		var count;  // Number of insertions or removals.
+		var count  // Number of insertions or removals.
 		
 		if ( !shifted ) {  // Indent the selected lines.
 			
@@ -136,7 +136,7 @@
 	function tick(elem) {
 		if ( elem.target ) elem = elem.target
 		
-		elem.rows = elem.value.match(/\n/g).length + 1;
+		elem.rows = elem.value.match(/\n/g).length + 1
 		
 		var limit = elem.maxLength,
 			parent = elem.parentElement,
@@ -152,16 +152,16 @@
 	}
 	
 	input.addEventListener('keydown', e => {
-		if ( e.isComposing || e.keyCode === 229) return;  // Protect against IME composition events.
-		if ( e.which === 9 ) insertTab(e);
-	});
+		if ( e.isComposing || e.keyCode === 229) return  // Protect against IME composition events.
+		if ( e.which === 9 ) insertTab(e)
+	})
 	
 	input.addEventListener('keyup', e => {
-		if ( e.isComposing || e.keyCode === 229) return;  // Protect against IME composition events.
+		if ( e.isComposing || e.keyCode === 229) return  // Protect against IME composition events.
 		window.clearTimeout(delay)  // Clear any pending commit timeout.
 		delay = window.setTimeout(commit, 450, input)  // Delay commit to ensure typing has stopped.
 		tick(e)  // Update the maximum length calculation and input size.
-	});
+	})
 	
 	tick(input)  // Update our length counters and height.
 	commit(input)  // Canonicalize the URI.
