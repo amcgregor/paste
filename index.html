@@ -36,6 +36,8 @@
 		font-weight: bold;
 	}
 	
+	.badged[data-remaining].plaid { background-image: repeating-linear-gradient(transparent, transparent 25px, rgba(0, 0, 0, 0.4) 25px, rgba(0, 0, 0, 0.4) 28px, transparent 28px, transparent 31.5px, rgba(0, 0, 0, 0.4) 31.5px, rgba(0, 0, 0, 0.4) 34.5px, transparent 34.5px, transparent 58px, rgba(0, 0, 0, 0.5) 58px, rgba(0, 0, 0, 0.5) 83px, rgba(255, 255, 255, 0.2) 83px, rgba(255, 255, 255, 0.2) 86px, rgba(0, 0, 0, 0.5) 44.5px, rgba(0, 0, 0, 0.5) 89.5px, rgba(255, 255, 255, 0.2) 89.5px, rgba(255, 255, 255, 0.2) 92.5px, rgba(0, 0, 0, 0.5) 92.5px, rgba(0, 0, 0, 0.5) 117.5px, transparent 117.5px), repeating-linear-gradient(270deg, transparent, transparent 25px, rgba(0, 0, 0, 0.4) 25px, rgba(0, 0, 0, 0.4) 28px, transparent 28px, transparent 31.5px, rgba(0, 0, 0, 0.4) 31.5px, rgba(0, 0, 0, 0.4) 34.5px, transparent 34.5px, transparent 58px, rgba(0, 0, 0, 0.5) 58px, rgba(0, 0, 0, 0.5) 83px, rgba(255, 255, 255, 0.2) 83px, rgba(255, 255, 255, 0.2) 86px, rgba(0, 0, 0, 0.5) 44.5px, rgba(0, 0, 0, 0.5) 89.5px, rgba(255, 255, 255, 0.2) 89.5px, rgba(255, 255, 255, 0.2) 92.5px, rgba(0, 0, 0, 0.5) 92.5px, rgba(0, 0, 0, 0.5) 117.5px, transparent 117.5px), repeating-linear-gradient(125deg, transparent, transparent 2px, rgba(0, 0, 0, 0.2) 2px, rgba(0, 0, 0, 0.2) 3px, transparent 3px, transparent 5px, rgba(0, 0, 0, 0.2) 5px); color: #ccc }
+	.badged[data-remaining].plaid::after { color: transparent }
 	.badged[data-remaining].ludicrous::after { color: #F0F }
 	.badged[data-remaining].safe::after { color: #060 }
 	.badged[data-remaining].warning::after { color: #FF0 }
@@ -143,12 +145,13 @@
 			length = elem.value.length
 		
 		parent.dataset['remaining'] = limit - length
-		parent.classList.remove('ludicrous', 'safe', 'warning', 'critical')
+		parent.classList.remove('plaid', 'ludicrous', 'safe', 'warning', 'critical')
 		
-		if ( length < 160 ) parent.classList.add('ludicrous')  // Our link is short enough to SMS or iMessage.
-		else if ( length < 256 ) parent.classList.add('safe');  // Our link is short enough to paste into IRC.
-		else if ( length / limit >= 0.90 ) parent.classList.add('critical');  // We've reached 90% of the limit.
-		else if ( length / limit >= 0.75 ) parent.classList.add('warning');  // Reached 75% of the limit.
+		if ( length < (window.location.origin + window.location.pathname).length ) parent.classList.add('plaid')
+		else if ( length < 160 ) parent.classList.add('ludicrous')  // Our link is short enough to SMS or iMessage.
+		else if ( length < 256 ) parent.classList.add('safe')  // Our link is short enough to paste into IRC.
+		else if ( length / limit >= 0.90 ) parent.classList.add('critical')  // We've reached 90% of the limit.
+		else if ( length / limit >= 0.75 ) parent.classList.add('warning')  // Reached 75% of the limit.
 	}
 	
 	input.addEventListener('keydown', e => {
