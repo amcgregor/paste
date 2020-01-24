@@ -71,7 +71,7 @@
 	
 	function commit(origin) {
 		let value = origin.value,
-			text = encodeURIComponent(value).replace(safe, s => decodeURIComponent(s))
+			text = encodeURIComponent(value).replace(/%20(?!$)/g, '+').replace(safe, s => decodeURIComponent(s))
 		
 		window.history.replaceState({}, '', window.location.origin + window.location.pathname + '?' + text)
 	}
