@@ -127,7 +127,7 @@
 	function tick(elem) {
 		if ( elem.target ) elem = elem.target
 		
-		elem.rows = elem.value.match(/\n/g).length + 1
+		elem.rows = elem.value.includes("\n") ? elem.value.match(/\n/g).length + 1 : 1
 		
 		var limit = elem.maxLength,
 			parent = elem.parentElement,
