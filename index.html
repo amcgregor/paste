@@ -62,6 +62,7 @@
 	
 	var delay
 	let input = document.getElementById('input')
+	const safe = /%(20|28|29|2C|2E|3A|3B|3D|5B|5D|8B|7D)/g
 	
 	if ( document.location.search ) {
 		input.value = decodeURIComponent(document.location.search.substr(1).replace(/\+/g, '%20'))
@@ -69,20 +70,8 @@
 	}
 	
 	function commit(origin) {
-		let value = origin.value;
-		let text = encodeURIComponent(value)
-			.replace(/%20/g, '+')
-			.replace(/%28/g, '(')
-			.replace(/%29/g, ')')
-			.replace(/%2C/g, ',')
-			.replace(/%2E/g, '.')
-			.replace(/%3A/g, ':')
-			.replace(/%3D/g, '=')
-			.replace(/%5B/g, '[')
-			.replace(/%5D/g, ']')
-			.replace(/%7B/g, '{')
-			.replace(/%7D/g, '}')
-			.replace(/%3B/g, ';')
+		let value = origin.value,
+			text = encodeURIComponent(value).replace(safe, s => decodeURIComponent(s))
 		
 		window.history.replaceState({}, '', window.location.origin + window.location.pathname + '?' + text)
 	}
