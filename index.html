@@ -84,7 +84,7 @@
 			.replace(/%7D/g, '}')
 			.replace(/%3B/g, ';')
 		
-		window.history.replaceState({}, "", window.location.origin + window.location.pathname + "?" + text)
+		window.history.replaceState({}, '', window.location.origin + window.location.pathname + '?' + text)
 	}
 	
 	function insertTab(e) {
@@ -107,8 +107,8 @@
 			return
 		}
 		
-		start = value.lastIndexOf('\n', start) + 1
-		end = value.indexOf('\n', end)
+		start = value.lastIndexOf("\n", start) + 1
+		end = value.indexOf("\n", end)
 		if ( end < 0 ) end = value.length
 		
 		var count  // Number of insertions or removals.
