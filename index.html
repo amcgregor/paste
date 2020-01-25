@@ -62,7 +62,7 @@
 	
 	var delay
 	let input = document.getElementById('input')
-	const safe = /%(20|28|29|2C|2E|3A|3B|3D|5B|5D|8B|7D)/g
+	const safe = /%(20|2C|2E|3A|3B|3D|5B|5D|8B|7D)(?!$)/g
 	
 	if ( document.location.search ) {
 		input.value = decodeURIComponent(document.location.search.substr(1).replace(/\+/g, '%20'))
