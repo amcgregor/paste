@@ -38,7 +38,7 @@ Some functionality beyond standard browser behaviours for a `<textarea>` are inc
   
   Because Base64-encoding actually makes the result larger. Instead of having three characters to encode one, occasionally, you have a _minimum_ of two characters per encoded character, always, _plus padding_. For even short snippets, this can have a significant impact.
   
-  Additionally, Unless you are truly a savant, Base64 entirely obscures the content… for no gain.  Compare the following:
+  Additionally, unless you are truly a savant, Base64 entirely obscures the content… for no gain.  Compare the following:
   
   **148 bytes, Base64:** `aW1wb3J0IHN5cwoKZGVmIG1haW4oeCwgeSk6CglyZXR1cm4gaW50KHgpICogaW50KHkpCgppZiBfX25hbWVfXyA9PSAnX19tYWluX18nOiBzeXMuZXhpdChtYWluKCpzeXMuYXJndlsxOl0pKQ==`
 
