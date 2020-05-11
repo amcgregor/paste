@@ -69,7 +69,7 @@
 	
 	var delay
 	let input = document.getElementById('input')
-	const safe = {
+	const SAFE = {
 			paranoid: false,
 			compact: /%(20|2C|2E|3A|3B|3D|5B|5D|8B|7D)/g,
 			bbcode: /%(20|2C|2E|3A|3B|3D|8B|7D)/g,
@@ -90,7 +90,7 @@
 	
 	function commit(origin) {
 		let value = origin.value,
-			safe = safe[document.getElementById('representation').value]
+			safe = SAFE[representation.value]
 		var text = encodeURIComponent(value.substring(0, value.length - 1))
 		
 		if ( safe !== false ) // Optionally "weaken" the encoding and improve readability by
