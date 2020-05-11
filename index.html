@@ -52,6 +52,13 @@
 
 <form class=badged data-limit=4000><textarea id=input rows=10 maxlength=4000></textarea></form>
 
+<select id=representation hidden>
+	<option value=paranoid>Paranoia (Unmodified Encoding)
+	<option value=spaces>Safest (Only Replace Spaces)
+	<option selected value=compact>Default (Markdown-Safe)
+	<option value=bbcode>BBCode Compatible (Encode Square Brackets)
+</select>
+
 <footer>
 	<p>© 2020 Alice Bevan-McGregor.</p>
 	<p><a href=https://github.com/amcgregor/paste>Released under the MIT license.</a></p>
