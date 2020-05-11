@@ -172,6 +172,11 @@
 		else if ( length / limit >= 0.75 ) parent.classList.add('warning')  // Reached 75% of the limit.
 	}
 	
+	representation.addEventListener('change', e => {
+		tick(input)  // Update our length counters and height.
+		commit(input)  // Canonicalize the URI.
+	})
+	
 	input.addEventListener('keydown', e => {
 		if ( e.isComposing || e.keyCode === 229) return  // Protect against IME composition events.
 		if ( e.which === 9 ) insertTab(e)
