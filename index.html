@@ -90,7 +90,7 @@
 	
 	function commit(origin) {
 		let value = origin.value,
-			safe = safe[representation.value]
+			safe = safe[document.getElementById('representation').value]
 		var text = encodeURIComponent(value.substring(0, value.length - 1))
 		
 		if ( safe !== false ) // Optionally "weaken" the encoding and improve readability by
