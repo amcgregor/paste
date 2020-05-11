@@ -1,8 +1,10 @@
 # [paste.webcore.io](https://paste.webcore.io/)
 
-An anonymous pastebin web application service… just without the "service" part.  Or the "web application".  Intended for reasonable length snippets, with a green light for links that ought to fit within an IRC message.  Utilizes no external assets of any kind, and no "server-side" storage.
+An anonymous "pastebin"-like web application service… just without the "service" part.  Or the "web application", and without permanent storage.  Intended for reasonable length snippets, ones that typically would fit reasonably within a chat input box, but where fixed-width formatting must be preserved. Provides a "remaining character counter" and currently enforces a 4KB upper limit, is built of **absolutely minimal** HTML5, CSS, and ES6, delivered as a single file with no external assets or requests of any kind.
 
-For those tiny code samples that happen to be multi-line or require indentation, such as is the case with Python.
+For those tiny code samples that happen to be multi-line or require indentation, such as is the case with Python, and for which permanent storage / tracking would be essentially a pointless waste of resources.
+
+Why? Because [I'm Batman](https://paste.webcore.io/?+++++++++.++.%0A++++++++++%7C%5C_%7C%5C%0A++++++++++%7C+a_a%5C++%22Because+I%27m+Batman.%22%0A++++++++++%7C+%7C+%22]%0A++++++____%7C+%27-%5C___%0A+++++%2F.----.___.-%27%5C%0A++++%2F%2F++++++++_++++%5C%0A+++%2F%2F+++.-.+%28~v~%29+%2F%7C%0A++%7C%27%7C++%2F%5C:++.--++%2F+%5C%0A+%2F%2F+%7C-%2F++%5C_%2F____%2F%5C%2F~%7C%0A%7C%2F++%5C+%7C++[]_%7C_%7C_]+%5C+%7C%0A%7C+%5C++%7C+%5C+%7C___+++_%5C+]_}%0A%7C+%7C++%27-%27+%2F+++%27.%27++%7C%0A%7C+%7C+++++%2F++++%2F%7C:++%7C+%0A%7C+%7C+++++%7C+++%2F+%7C:++%2F%5C%0A%7C+%7C+++++%2F++%2F++%7C++%2F++%5C%0A%7C+%7C++++%7C++%2F++%2F++%7C++++%5C%0A%5C+%7C++++%7C%2F%5C%2F++%7C%2F%7C%2F%5C++++%5C%0A+%5C%7C%5C+%7C%5C%7C++%7C++%7C+%2F+%2F%5C%2F%5C__%5C%0A++%5C+%5C%7C+%7C+%2F+++%7C+%7C__%0Asnd++++%2F+%7C+++%7C____%29%0A+++++++%7C_%2F). Because [some languages demand sensible indentation](https://paste.webcore.io/?import+sys%0A%0Adef+main%28x:str,+y:str%29+-%3E+int:%0A%09return+int%28x%29+*+int%28y%29%0A%0Aif+__name__+==+%27__main__%27:+sys.exit%28main%28*sys.argv[1:]%29%29) — and that link totally fits in an IRC message, showing a typical "main application script" structure, **in its entirety**. Almost all languages [just look better](https://paste.webcore.io/?%27use+strict%27;%0A%0Aconst+safe+=+%7B%0A%09%09paranoid:+false,%0A%09%09%2F%2F+...%0A%09}%0A%0Afunction+commit%28origin%29+%7B%0A%09let+value+=+origin.value,%0A%09%09safe+=+safe[representation.value]++%2F%2F+Where+is+this+coming+from%3F+👹%0A%09%0A%09%2F%2F+...%0A%7D).
 
 
 ### Editing Features
@@ -29,6 +31,14 @@ Some functionality beyond standard browser behaviours for a `<textarea>` are inc
 
 
 ### Frequently Asked Questions / Comments
+
+* **Is this actually an April Fool's joke?**
+  
+  Sadly, no. Too many users were entering IRC channels I moderate or participate heavily in, only to paste a link without the faintest whiff of romance first. Some would ask some form of question surrounding what they think they've shared, others would leave it at that. In both scenarios, often those users would eventually become upset when their answer receives no attention.
+  
+  In many cases, such as is the case with the developer of this "service", corporate firewall/gateway policies prevent access to anonymous file uploading/sharing services (protection against malware exfiltration of corporate secrets), block access to truly anonymous services as they are frequently utilized for botnet command and control (C&amp;C), and block access to services which permit upload of user content which is then delivered anonymously with the correct MIME-type, e.g. permitting upload and execution of remote JavaScript.
+  
+  According to one CTO, "there exists no legitimate reason to permit access to these services in the face of the threat they represent to corporate IP and infrastructure".
 
 * **Why don't you just Base64 encode and use that?**
   
