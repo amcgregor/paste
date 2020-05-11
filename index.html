@@ -69,7 +69,19 @@
 	
 	var delay
 	let input = document.getElementById('input')
-	const safe = /%(20|2C|2E|3A|3B|3D|5B|5D|8B|7D)(?!$)/g
+	const safe = {
+			paranoid: false,
+			compact: /%(20|2C|2E|3A|3B|3D|5B|5D|8B|7D)/g,
+			bbcode: /%(20|2C|2E|3A|3B|3D|8B|7D)/g,
+			braces: /%(20|2C|2E|3A|3B|3D|5B|5D|8B)/g,
+			
+			// 2E (period) may not be safe for text-based parsers attempting to "linkify".
+			
+			// Various text markup engines may have difficulty with various pairs of:
+			//	%28 %29	( )	Markdown links, e.g.: [foo](URI-HERE)
+			//	%5B %5D	[ ]	BBCode, e.g.: [url]URI-HERE[/url] or [url=URI-HERE]foo[/url]
+			//	%7B %7D	{ }	Text template engine variable substitutions such as Moustache or Handlebars.
+		}
 	
 	if ( document.location.search ) {
 		input.value = decodeURIComponent(document.location.search.substr(1).replace(/\+/g, '%20'))
@@ -78,8 +90,18 @@
 	
 	function commit(origin) {
 		let value = origin.value,
-			text = encodeURIComponent(value).replace(/%20(?!$)/g, '+').replace(safe, s => decodeURIComponent(s))
+			safe = safe[representation.value]
+		var text = encodeURIComponent(value.substring(0, value.length - 1))
 		
+		if ( safe !== false ) // Optionally "weaken" the encoding and improve readability by
+			text = text.replace(/%20/g, '+')  // forcing spaces to use their more compact alternate form, and
+				.replace(safe, s => decodeURIComponent(s)) \  // decoding "safe" characters back, excepting
+		text += encodeURIComponent(value[value.length-1])  // the final character, which we always keep fully encoded.
+		
+		// That last bit is a concession to certain environmental limitations, e.g. IRC client link matching/rendering.
+		
+		// This is not a true "commit" in that history is not pushed, only replaced; a "commit" in the sense that the
+		// content entered is now "saved" into the address, for easy copying and pasting.
 		window.history.replaceState({}, '', window.location.origin + window.location.pathname + '?' + text)
 	}
 	
