@@ -49,10 +49,20 @@ Some functionality beyond standard browser behaviours for a `<textarea>` are inc
   Because Base64-encoding actually makes the result larger. Instead of having three characters to encode one, occasionally, you have a _minimum_ of two characters per encoded character, always, _plus padding_. For even short snippets, this can have a significant impact.
   
   Additionally, unless you are truly a savant, Base64 entirely obscures the content… for no gain.  Compare the following:
-  
-  **148 bytes, Base64:** `aW1wb3J0IHN5cwoKZGVmIG1haW4oeCwgeSk6CglyZXR1cm4gaW50KHgpICogaW50KHkpCgppZiBfX25hbWVfXyA9PSAnX19tYWluX18nOiBzeXMuZXhpdChtYWluKCpzeXMuYXJndlsxOl0pKQ==`
 
-  **125 bytes, URL encoded:** `import+sys%0A%0Adef+main(x,+y):%0A%09return+int(x)+*+int(y)%0A%0Aif+__name__+==+%27__main__%27:+sys.exit(main(*sys.argv[1:]))`
+  <details open><summary><strong>148 bytes, Base64</strong></summary>
+  
+  ```
+  aW1wb3J0IHN5cwoKZGVmIG1haW4oeCwgeSk6CglyZXR1cm4gaW50KHgpICogaW50KHkpCgppZiBfX25hbWVfXyA9PSAnX19tYWluX18nOiBzeXMuZXhpdChtYWluKCpzeXMuYXJndlsxOl0pKQ==
+  ```
+  </details>
+
+  <details open><summary><strong>125 bytes, URL encoded</strong></summary>
+  
+  ```
+  import+sys%0A%0Adef+main(x,+y):%0A%09return+int(x)+*+int(y)%0A%0Aif+__name__+==+%27__main__%27:+sys.exit(main(*sys.argv[1:]))
+  ```
+  </details>
 
   Bonus, it's still readable! The entire suggestion to use Base64 avoids the point of this "service" as a response to users writing their questions into paste services, pasting the link, then just hoping someone's curious enough to click it.  [The link is the question.](https://paste.webcore.io/?This+resolves+my+complaint+of+people+using+Paste+services+to+ask+questions,+though.++The+link+is+the+question.)
 
