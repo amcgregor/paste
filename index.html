@@ -160,16 +160,17 @@
 		
 		var limit = elem.maxLength,
 			parent = elem.parentElement,
-			length = elem.value.length
+			length = elem.value.length,
+			pcl = parent.classList;
 		
 		parent.dataset['remaining'] = limit - length
-		parent.classList.remove('plaid', 'ludicrous', 'safe', 'warning', 'critical')
+		pcl.remove('plaid', 'ludicrous', 'safe', 'warning', 'critical')
 		
-		if ( length < (window.location.origin + window.location.pathname).length ) parent.classList.add('plaid')
-		else if ( length < 160 ) parent.classList.add('ludicrous')  // Our link is short enough to SMS or iMessage.
-		else if ( length < 256 ) parent.classList.add('safe')  // Our link is short enough to paste into IRC.
-		else if ( length / limit >= 0.90 ) parent.classList.add('critical')  // We've reached 90% of the limit.
-		else if ( length / limit >= 0.75 ) parent.classList.add('warning')  // Reached 75% of the limit.
+		if ( length < (window.location.origin + window.location.pathname).length ) pcl.add('plaid')
+		else if ( length < 160 ) pcl.add('ludicrous')  // Our link is short enough to SMS or iMessage.
+		else if ( length < 256 ) pcl.add('safe')  // Our link is short enough to paste into IRC.
+		else if ( length / limit >= 0.90 ) pcl.add('critical')  // We've reached 90% of the limit.
+		else if ( length / limit >= 0.75 ) pcl.add('warning')  // Reached 75% of the limit.
 	}
 	
 	representation.addEventListener('change', e => {
