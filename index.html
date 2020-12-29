@@ -155,15 +155,13 @@
 	
 	function tick(elem) {
 		if ( elem.target ) elem = elem.target
-		
 		elem.rows = elem.value.includes("\n") ? elem.value.match(/\n/g).length + 1 : 1
 		
 		var limit = elem.maxLength,
-			parent = elem.parentElement,
 			length = elem.value.length,
-			pcl = parent.classList;
+			pcl = elem.parentElement.classList;
 		
-		parent.dataset['remaining'] = limit - length
+		elem.parentElement.dataset['remaining'] = limit - length
 		pcl.remove('plaid', 'ludicrous', 'safe', 'warning', 'critical')
 		
 		if ( length < (window.location.origin + window.location.pathname).length ) pcl.add('plaid')
